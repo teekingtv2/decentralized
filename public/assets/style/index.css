@@ -80,7 +80,8 @@ html {
     font-size: 11px;
   }
 
-  input::placeholder {
+  input::placeholder,
+  textarea::placeholder {
     color: #5e6266;
     font-size: 12px;
     font-weight: 400;
